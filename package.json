@@ -1,0 +1,23 @@
+{
+  "name": "data-sync",
+  "version": "1.0.0",
+  "main": "sync.js",
+  "scripts": {
+    "sync": "node ./sync.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robsonalvesnogueira/data-sync.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robsonalvesnogueira/data-sync/issues"
+  },
+  "homepage": "",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.0.1"
+  }
+}
