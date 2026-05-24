@@ -1,0 +1,33 @@
+name: Auto sync
+
+on:
+  schedule:
+    - cron: '0 */24 * * *'
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+    -
+      name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run sync
+      run: npm run sync
+      env:
+        MS_URL: ${{ secrets.MS_URL }}
+        LF_URL: ${{ secrets.LF_URL }}
+        QN_URL: ${{ secrets.QN_URL }}
+        LM_URL: ${{ secrets.LM_URL }}
+        TM_URL: ${{ secrets.TM_URL }}
+        DDS_URL: ${{ secrets.DDS_URL }}
+        DS_URL: ${{ secrets.DS_URL }}
+        MM_URL: ${{ secrets.MM_URL }}
+        FD_URL: ${{ secrets.FD_URL }}
+        SS_URL: ${{ secrets.SS_URL }}
+
+    - name: Feedback
+      run: echo "Sync finished!"
