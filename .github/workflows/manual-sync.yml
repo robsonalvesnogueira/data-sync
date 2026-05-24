@@ -5,28 +5,49 @@ on:
 
 jobs:
   import:
+
     runs-on: ubuntu-latest
+
+    concurrency:
+      group: sync
+      cancel-in-progress: true
+
+    permissions:
+      contents: write
+
     steps:
-    -
-      name: Checkout repository
-      uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: npm install
+      - uses: actions/checkout@v4
 
-    - name: Run sync
-      run: npm run sync
-      env:
-        MS_URL: ${{ secrets.MS_URL }}
-        LF_URL: ${{ secrets.LF_URL }}
-        QN_URL: ${{ secrets.QN_URL }}
-        LM_URL: ${{ secrets.LM_URL }}
-        TM_URL: ${{ secrets.TM_URL }}
-        DDS_URL: ${{ secrets.DDS_URL }}
-        DS_URL: ${{ secrets.DS_URL }}
-        MM_URL: ${{ secrets.MM_URL }}
-        FD_URL: ${{ secrets.FD_URL }}
-        SS_URL: ${{ secrets.SS_URL }}
+      - name: Install dependencies
+        run: npm install
 
-    - name: Feedback
-      run: echo "Sync finished!"
+      - name: Run sync
+        run: npm run sync
+        env:
+          MS_URL: ${{ secrets.MS_URL }}
+          LF_URL: ${{ secrets.LF_URL }}
+          QN_URL: ${{ secrets.QN_URL }}
+          LM_URL: ${{ secrets.LM_URL }}
+          TM_URL: ${{ secrets.TM_URL }}
+          DDS_URL: ${{ secrets.DDS_URL }}
+          DS_URL: ${{ secrets.DS_URL }}
+          MM_URL: ${{ secrets.MM_URL }}
+          FD_URL: ${{ secrets.FD_URL }}
+          SS_URL: ${{ secrets.SS_URL }}
+
+      - name: Commit changes
+        run: |
+
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+
+          git commit -m "sync data"
+          git push
