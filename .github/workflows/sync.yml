@@ -2,7 +2,13 @@ name: Auto sync
 
 on:
   schedule:
-    - cron: '0 1,13 * * *'
+    # Horários de Brasília
+    - cron: '15 21,22,23 * * *'
+      timezone: 'America/Sao_Paulo'
+
+    # Verificação na manhã seguinte
+    - cron: '15 8 * * *'
+      timezone: 'America/Sao_Paulo'
 
 jobs:
   import:
